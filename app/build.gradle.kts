@@ -41,10 +41,8 @@ android {
 }
 
 dependencies {
-
-    //implementation("org.lsposed.lsplant:lsplant-standalone:6.4")
-    //implementation("org.lsposed.lsplant:lsplant:+")
-    implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
+    // для обхода защиты на Android 9+
+    implementation("org.lsposed.hiddenapibypass:hiddenapibypass:6.1")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

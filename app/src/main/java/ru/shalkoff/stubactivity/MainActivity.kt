@@ -3,19 +3,20 @@ package ru.shalkoff.stubactivity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import org.lsposed.hiddenapibypass.HiddenApiBypass
-import ru.shalkoff.stubactivity.stubs.StubActivityStandard
 import ru.shalkoff.stubactivity.ui.theme.StubActivityTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,47 +27,21 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Обход ограничений скрытых API
-        Log.d(TAG, "Initializing HiddenApiBypass")
-        try {
-            HiddenApiBypass.addHiddenApiExemptions("android.app.IActivityManager")
-            HiddenApiBypass.addHiddenApiExemptions("android.app.ActivityManager")
-            HiddenApiBypass.addHiddenApiExemptions("android.util.Singleton")
-            HiddenApiBypass.addHiddenApiExemptions("android.app.ActivityThread")
-            HiddenApiBypass.addHiddenApiExemptions("android.app.Activity")
-            Log.d(TAG, "HiddenApiBypass initialized successfully")
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to initialize HiddenApiBypass", e)
-        }
-
-        // Устанавливаем глобальный хук
-        Log.d(TAG, "Installing global Instrumentation hook")
-        try {
-            HookHelper.hookGlobalInstrumentation()
-            Log.d(TAG, "Global hooks installed successfully")
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to install global hooks", e)
-        }
         enableEdgeToEdge()
         setContent {
             StubActivityTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier
-                            .clickable {
-                                Log.d(TAG, "button_second clicked, launching SecondActivity")
-                                val targetIntent = Intent().apply {
-                                    setClassName(packageName, "ru.shalkoff.stubactivity.SecondActivity")
-                                }
-                                Log.d(TAG, "Created targetIntent: $targetIntent")
-                                val stubIntent = Intent(this, StubActivityStandard::class.java).apply {
-                                    putExtra(HookHelper.EXTRA_TARGET_INTENT, targetIntent)
-                                }
-                                Log.d(TAG, "Created stubIntent: $stubIntent, extras: ${stubIntent.extras}")
-                                HookHelper.startActivity(this, stubIntent)
+                    MainScreen(
+                        modifier = Modifier.padding(innerPadding),
+                        onLaunchTarget = {
+                            try {
+                                val intent = Intent(this, Target2Activity::class.java)
+                                startActivity(intent)
+                            } catch (e: Exception) {
+                                Log.e(TAG, "Failed to launch TargetActivity", e)
+                                Toast.makeText(this, "Launch Failed: ${e.message}", Toast.LENGTH_SHORT).show()
                             }
-                            .padding(innerPadding)
+                        }
                     )
                 }
             }
@@ -75,17 +50,17 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    StubActivityTheme {
-        Greeting("Android")
+fun MainScreen(
+    modifier: Modifier = Modifier,
+    onLaunchTarget: () -> Unit
+) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(onClick = onLaunchTarget) {
+            Text(text = "Launch TargetActivity (Unregistered)")
+        }
     }
 }
