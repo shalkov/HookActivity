@@ -28,5 +28,4 @@
         <activity android:name=".activities.StubActivity" />
 
 </application>
-
 </manifest>
