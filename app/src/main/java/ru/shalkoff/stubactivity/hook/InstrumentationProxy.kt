@@ -1,4 +1,4 @@
-package ru.shalkoff.stubactivity
+package ru.shalkoff.stubactivity.hook
 
 import android.app.Activity
 import android.app.Instrumentation
@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import ru.shalkoff.stubactivity.activities.StubActivity
 import java.lang.reflect.Method
 
 /**
@@ -26,12 +27,6 @@ class InstrumentationProxy(private val base: Instrumentation) : Instrumentation(
     init {
         // Копируем все приватные поля из базового Instrumentation в наш Proxy.
         try {
-            // ВАЖНО: Используем HiddenApiBypass для получения полей, если он доступен.
-            // Стандартный class.declaredFields может скрывать поле mThread на Android 12+,
-            // даже если мы вызвали addHiddenApiExemptions("L").
-            // Но так как мы уже вызвали addHiddenApiExemptions в Application,
-            // попробуем просто стандартную рефлексию, но добавим логирование для отладки.
-            
             val fields = Instrumentation::class.java.declaredFields
             for (field in fields) {
                 field.isAccessible = true
@@ -75,7 +70,7 @@ class InstrumentationProxy(private val base: Instrumentation) : Instrumentation(
             null 
         }
 
-        // Если компонент наш, но система его не нашла — это наш клиент!
+        // Если компонент наш, но система его не нашла - это наш клиент
         if (component != null && component.packageName == who.packageName && resolveInfo == null) {
             Log.d(TAG, "Обнаружена незарегистрированная Activity: ${component.className}. Перехватываем!")
             

@@ -1,4 +1,4 @@
-package ru.shalkoff.stubactivity
+package ru.shalkoff.stubactivity.activities
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

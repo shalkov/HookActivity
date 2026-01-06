@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import ru.shalkoff.stubactivity.activities.Target2Activity
 import ru.shalkoff.stubactivity.ui.theme.StubActivityTheme
 
 class MainActivity : ComponentActivity() {
@@ -39,7 +40,11 @@ class MainActivity : ComponentActivity() {
                                 startActivity(intent)
                             } catch (e: Exception) {
                                 Log.e(TAG, "Failed to launch TargetActivity", e)
-                                Toast.makeText(this, "Launch Failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    this,
+                                    "Launch Failed: ${e.message}",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
                             }
                         }
                     )

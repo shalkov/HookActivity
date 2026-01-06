@@ -1,4 +1,4 @@
-package ru.shalkoff.stubactivity
+package ru.shalkoff.stubactivity.hook
 
 import android.app.Instrumentation
 import android.util.Log
@@ -38,7 +38,7 @@ object HookManager {
             // 6. Создаем наш Proxy, оборачивая оригинальный Instrumentation
             val proxyInstrumentation = InstrumentationProxy(originalInstrumentation)
 
-            // 7. Подменяем поле mInstrumentation в ActivityThread на наш Proxy
+            // 7. Подменяем поле mInstrumentation в ActivityThread на наш InstrumentationProxy
             mInstrumentationField.set(currentActivityThread, proxyInstrumentation)
 
             Log.d(TAG, "Глобальный хук успешно установлен!")

@@ -1,12 +1,15 @@
-package ru.shalkoff.stubactivity
+package ru.shalkoff.stubactivity.activities
 
 import android.app.Activity
 import android.os.Bundle
 
+/**
+ * Activity - заглушка, для запуска других активити, которые не зарегистрированы в Manifest
+ */
 class StubActivity : Activity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // This activity should never be visible
         finish()
     }
 }

@@ -3,8 +3,9 @@ package ru.shalkoff.stubactivity
 import android.app.Application
 import android.util.Log
 import org.lsposed.hiddenapibypass.HiddenApiBypass
+import ru.shalkoff.stubactivity.hook.HookManager
 
-class MyApplication : Application() {
+class AppApplication : Application() {
 
     private companion object {
         private const val TAG = "MyApplication"
