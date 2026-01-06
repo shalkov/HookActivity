@@ -22,12 +22,12 @@ class AppApplication : Application() {
         } catch (e: Exception) {
             Log.e(TAG, "Failed to initialize HiddenApiBypass", e)
         }
-        
+
         // Применяем глобальный хук сразу при старте приложения.
         // Это гарантирует, что все последующие Activity (включая MainActivity)
         // будут созданы уже с нашим подмененным Instrumentation.
         HookManager.applyHook()
-        
+
         Log.d(TAG, "Hook applied from MyApplication")
     }
 }

@@ -17,7 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import ru.shalkoff.stubactivity.activities.Target2Activity
+import ru.shalkoff.stubactivity.activities.TargetActivity
 import ru.shalkoff.stubactivity.ui.theme.StubActivityTheme
 
 class MainActivity : ComponentActivity() {
@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding),
                         onLaunchTarget = {
                             try {
-                                val intent = Intent(this, Target2Activity::class.java)
+                                val intent = Intent(this, TargetActivity::class.java)
                                 startActivity(intent)
                             } catch (e: Exception) {
                                 Log.e(TAG, "Failed to launch TargetActivity", e)
